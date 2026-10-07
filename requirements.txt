@@ -1,0 +1,12 @@
+opencv-python
+ultralytics
+flask
+flask-httpauth
+werkzeug
+python-dotenv
+sounddevice
+numpy
+requests
+
+# Optional — only needed if HTTPS_ENABLED=true in .env
+cryptography

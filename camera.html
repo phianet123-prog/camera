@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Argus — {{ camera.name }}{% endblock %}
+{% block content %}
+  <h1>{{ camera.name }}</h1>
+  <p class="sub">
+    <span class="badge {{ stats.status }}">{{ stats.status|upper }}</span>
+    &nbsp; source: {{ camera.source }}
+  </p>
+
+  <img class="card-feed" style="border:1px solid var(--line); max-width:900px;" src="{{ url_for('video_feed', camera_id=camera.id) }}" alt="{{ camera.name }}">
+
+  <table style="max-width:600px; margin-top:24px;">
+    <tr><th>Started</th><td>{{ stats.started_at or "—" }}</td></tr>
+    <tr><th>Last detection</th><td>{{ stats.last_detection_at or "—" }}</td></tr>
+    <tr><th>Last alert sent</th><td>{{ stats.last_alert_at or "—" }}</td></tr>
+    <tr><th>Detections today</th><td>{{ stats.detections_today or 0 }}</td></tr>
+    <tr><th>Resolution</th><td>{{ stats.frame_width or "—" }} × {{ stats.frame_height or "—" }}</td></tr>
+    <tr><th>Detecting</th><td>{% for c in camera.classes %}{{ class_names.get(c, c) }}{% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+    <tr><th>Zones</th><td>{% for z in camera.zones %}{{ z.name }}{% if not loop.last %}, {% endif %}{% endfor %}</td></tr>
+  </table>
+
+  <div style="margin-top:24px; display:flex; gap:12px;">
+    <a class="btn" href="{{ url_for('gallery', camera_id=camera.id) }}">View clips</a>
+    <a class="btn" href="{{ url_for('settings') }}#{{ camera.id }}">Edit zones / classes</a>
+    <form action="{{ url_for('restart_camera_route', camera_id=camera.id) }}" method="post" style="display:inline;">
+      <button class="btn" type="submit">Restart camera</button>
+    </form>
+  </div>
+{% endblock %}

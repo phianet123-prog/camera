@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Argus — Gallery{% endblock %}
+{% block content %}
+  <h1>Gallery</h1>
+  <p class="sub">Clips and snapshots saved to static/captures.</p>
+
+  <div class="filter-bar">
+    <a href="{{ url_for('gallery') }}" class="{{ 'active' if not selected_camera else '' }}">All cameras</a>
+    {% for cam in cameras %}
+      <a href="{{ url_for('gallery', camera_id=cam.id) }}" class="{{ 'active' if selected_camera == cam.id else '' }}">{{ cam.name }}</a>
+    {% endfor %}
+  </div>
+
+  {% if media_files %}
+  <div class="gallery-grid">
+    {% for item in media_files %}
+    <div class="gallery-item">
+      {% if item.file.endswith('.mp4') %}
+        <video controls preload="metadata">
+          <source src="{{ url_for('static', filename='captures/' + item.file) }}" type="video/mp4">
+        </video>
+      {% else %}
+        <img src="{{ url_for('static', filename='captures/' + item.file) }}" alt="{{ item.file }}">
+      {% endif %}
+      <div class="fname">{{ item.camera_id }} · {{ item.file }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No captures yet.</div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Argus — Dashboard{% endblock %}
+{% block content %}
+  <h1>Cameras</h1>
+  <p class="sub">{{ cameras|length }} camera(s) configured.</p>
+
+  {% if cameras %}
+  <div class="grid">
+    {% for cam in cameras %}
+    <div class="card">
+      <a href="{{ url_for('camera_detail', camera_id=cam.id) }}">
+        <img class="card-feed" src="{{ url_for('video_feed', camera_id=cam.id) }}" alt="{{ cam.name }}">
+      </a>
+      <div class="card-body">
+        <div class="card-title">
+          <span>{{ cam.name }}</span>
+          <span class="badge {{ cam.stats.status }}">{{ cam.stats.status|upper }}</span>
+        </div>
+        <div class="meta">
+          <div>Last detection: {{ cam.stats.last_detection_at or "—" }}</div>
+          <div>Detections today: {{ cam.stats.detections_today or 0 }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No cameras configured yet. Add one from <a href="{{ url_for('settings') }}" style="color:var(--yellow)">Settings</a>.</div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Argus{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav>
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-dot"></span> ARGUS</a>
+    <div class="links">
+      <a href="{{ url_for('index') }}">Dashboard</a>
+      <a href="{{ url_for('gallery') }}">Gallery</a>
+      <a href="{{ url_for('settings') }}">Settings</a>
+    </div>
+  </nav>
+  <div class="wrap">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
